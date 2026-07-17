@@ -1,0 +1,16 @@
+{
+  "extras": [
+    "lazyvim.plugins.extras.lang.astro",
+    "lazyvim.plugins.extras.lang.git",
+    "lazyvim.plugins.extras.lang.go",
+    "lazyvim.plugins.extras.lang.java",
+    "lazyvim.plugins.extras.lang.python",
+    "lazyvim.plugins.extras.lang.tailwind",
+    "lazyvim.plugins.extras.lang.typescript"
+  ],
+  "install_version": 8,
+  "news": {
+    "NEWS.md": "11866"
+  },
+  "version": 8
+}

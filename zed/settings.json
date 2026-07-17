@@ -1,0 +1,122 @@
+{
+  "cli_default_open_behavior": "new_window",
+  "project_panel": {
+    "dock": "left"
+  },
+  "outline_panel": {
+    "dock": "left"
+  },
+  "collaboration_panel": {
+    "dock": "left"
+  },
+  "git_panel": {
+    "dock": "left"
+  },
+
+  "agent_servers": {
+    "opencode": {
+      "default_config_options": {
+        "model": "opencode/deepseek-v4-flash-free",
+        "mode": "plan"
+      },
+      "type": "registry"
+    }
+  },
+
+  "vim_mode": false,
+
+  "show_edit_predictions": false,
+
+  "edit_predictions": {
+    "provider": "copilot",
+    "copilot": {
+      "enable_next_edit_suggestions": false
+    }
+  },
+
+  "completions": {
+    "words_min_length": 4
+  },
+
+  "agent": {
+    "dock": "right",
+
+    "default_model": {
+      "provider": "ollama",
+      "model": "qwen3:8b",
+      "enable_thinking": true
+    },
+
+    "favorite_models": [],
+
+    "model_parameters": []
+  },
+
+  "theme": {
+    "mode": "dark",
+    "light": "Ayu Light",
+    "dark": "Ayu Dark"
+  },
+
+  "icon_theme": "Material Icon Theme",
+
+  "ui_font_family": "JetBrainsMono Nerd Font",
+  "ui_font_weight": 400,
+  "ui_font_size": 15,
+
+  "buffer_font_family": "JetBrainsMono Nerd Font",
+  "buffer_font_size": 15,
+  "buffer_font_weight": 450,
+
+  "soft_wrap": "editor_width",
+  "show_whitespaces": "selection",
+  "selection_highlight": true,
+  "cursor_blink": true,
+  "relative_line_numbers": "enabled",
+  "buffer_line_height": "comfortable",
+
+  "buffer_font_features": {
+    "calt": true,
+    "liga": true
+  },
+
+  "colorize_brackets": true,
+
+  "autosave": {
+    "after_delay": {
+      "milliseconds": 500
+    }
+  },
+
+  "remove_trailing_whitespace_on_save": true,
+  "ensure_final_newline_on_save": true,
+
+  "file_scan_exclusions": [
+    "**/.git",
+    "**/.DS_Store",
+    "**/node_modules",
+    "**/__pycache__"
+  ],
+
+  "terminal": {
+    "font_family": "JetBrainsMono Nerd Font",
+    "font_size": 15,
+    "max_scroll_history_lines": 10000,
+    "cursor_shape": "underline"
+  },
+
+  "git": {
+    "enable_status": true
+  },
+
+  "telemetry": {
+    "diagnostics": false,
+    "metrics": false
+  },
+
+  "languages": {
+    "Go": {
+      "format_on_save": "on"
+    }
+  }
+}
