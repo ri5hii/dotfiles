@@ -1,0 +1,61 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "provider": {
+    "llamacpp": {
+      "name": "llama.cpp",
+      "npm": "@ai-sdk/openai-compatible",
+      "options": {
+        "baseURL": "http://127.0.0.1:11434/v1"
+      },
+      "models": {
+        "qwen3-8b": {
+          "name": "qwen3-8b"
+        }
+      }
+    }
+  }
+
+  // ---
+  // ADDING ANOTHER MODEL (e.g. 14b on port 11435):
+  //
+  // 1. Create and deploy a second service file (see ~/.config/llamacpp/llamacpp.service)
+  //    for an example — change --model, --port, and --gpu-layers.
+  //
+  // 2. Add a new provider here, one entry per model/service:
+  //
+  //    "llamacpp-14b": {
+  //      "name": "llama.cpp 14b",
+  //      "npm": "@ai-sdk/openai-compatible",
+  //      "options": {
+  //        "baseURL": "http://127.0.0.1:11435/v1"
+  //      },
+  //      "models": {
+  //        "qwen3-14b": {
+  //          "name": "qwen3-14b"
+  //        }
+  //      }
+  //    }
+  //
+  // 3. Also add the provider in .opencode/opencode.json (project-level):
+  //
+  //    "llamacpp-14b": {
+  //      "name": "llama.cpp 14b",
+  //      "api": "http://127.0.0.1:11435/v1",
+  //      "models": {
+  //        "qwen3-14b": {
+  //          "id": "qwen3-14b",
+  //          "tool_call": true,
+  //          "limit": { "context": 8192, "output": 2048 }
+  //        }
+  //      }
+  //    }
+  //
+  // 4. Point agents at it:
+  //    "doc-updater": { "model": "llamacpp-14b/qwen3-14b" }
+  //
+  // 5. Restart opencode.
+  //
+  // NOTE: 8b (~5G) + 14b (~9G) ≈ 14G RAM — will swap on 15GB.
+  // Run 14b alone if you need it, don't keep both long-term.
+  // ---
+}
