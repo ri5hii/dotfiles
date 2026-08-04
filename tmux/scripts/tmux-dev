@@ -5,12 +5,12 @@ tmux new-session -d -s dev -n main
 # Start with nvim in the first pane (full window)
 tmux send-keys -t dev:main.0 nvim Enter
 
-# Split right: opencode gets ~40% of the width, full height
-tmux split-window -h -t dev:main.0 -l 40%
+# Split right: opencode gets ~5% of the width, full height
+tmux split-window -h -t dev:main.0 -l 5%
 tmux send-keys -t dev:main.1 opencode Enter
 
-# Split the left (nvim) pane horizontally: shell gets ~10% height at the bottom
-tmux split-window -v -t dev:main.0 -l 10%
+# Split the left (nvim) pane horizontally: shell gets ~5% height at the bottom
+tmux split-window -v -t dev:main.0 -l 5%
 
 sleep 0.3
 

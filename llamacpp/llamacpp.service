@@ -1,0 +1,70 @@
+[Unit]
+Description=llama.cpp Server - qwen3-8b
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+ExecStart=/usr/local/bin/llama serve \
+  --model /home/root-0/models/gguf/qwen3-8b.gguf \
+  --host 127.0.0.1 \
+  --port 11434 \
+  --ctx-size 8192 \
+  --gpu-layers 13 \
+  --parallel 1
+User=root-0
+Group=root-0
+Restart=on-failure
+RestartSec=3
+Environment="PATH=/home/root-0/.bun/bin:/home/root-0/.opencode/bin:/home/root-0/.local/bin:/usr/local/bin:/usr/bin"
+
+[Install]
+WantedBy=default.target
+
+# ---
+# FLAGS:
+#   --model        GGUF file to load (absolute path)
+#   --host         Bind address (127.0.0.1 = local only)
+#   --port         API port (opencode hits /v1 on this port)
+#   --ctx-size     Context window in tokens (more = more RAM)
+#   --gpu-layers   Layers offloaded to GPU (0 = CPU only, 13 = full GPU for 8b on 4GB)
+#   --parallel     Concurrent request slots (1 = safe for 4GB GPU)
+#
+# USEFUL COMMANDS:
+#   sudo systemctl restart llamacpp   apply config changes
+#   sudo journalctl -u llamacpp -f    live logs
+#
+# ---
+# MULTIPLE MODELS ON DIFFERENT PORTS:
+#
+# To serve two models at once (e.g. 8b on 11434, 14b on 11435):
+#
+# 1. Create a second service file:
+#    /etc/systemd/system/llamacpp-14b.service
+#
+# 2. Copy this file, then change:
+#    - Description=llama.cpp Server - qwen3-14b
+#    - --model to the other .gguf file
+#    - --port to 11435
+#    - --gpu-layers 0  (14b won't fit in 4GB VRAM alongside anything)
+#
+# 3. Deploy:
+#    sudo cp llamacpp-14b.service /etc/systemd/system/
+#    sudo systemctl daemon-reload
+#    sudo systemctl enable --now llamacpp-14b.service
+#
+# 4. Add the model to opencode configs (both .config/opencode/opencode.jsonc
+#    and .opencode/opencode.json):
+#    "provider": {
+#      "llamacpp-14b": {
+#        "name": "llama.cpp 14b",
+#        "api": "http://127.0.0.1:11435/v1",
+#        ...
+#      }
+#    }
+#
+# 5. Restart opencode to pick up the new provider.
+#
+# NOTE: Each model eats RAM. 8b (~5G) + 14b (~9G) = ~14G,
+# which may cause swapping on 15GB RAM. Use 14b alone if you
+# need it, don't run both long-term.
+# ---
