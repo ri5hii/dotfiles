@@ -8,9 +8,13 @@ ExecStart=/usr/local/bin/llama serve \
   --model /home/root-0/models/gguf/qwen3-8b.gguf \
   --host 127.0.0.1 \
   --port 11434 \
-  --ctx-size 8192 \
-  --gpu-layers 13 \
-  --parallel 1
+  --ctx-size 32768 \
+  --gpu-layers 20 \
+  --parallel 1 \
+  --flash-attn on \
+  --cache-type-k q8_0 \
+  --cache-type-v q8_0 \
+  --no-kv-offload
 User=root-0
 Group=root-0
 Restart=on-failure
