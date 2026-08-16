@@ -23,40 +23,40 @@ command = "false"
 
 [custom.git_danger]
 when = "git diff --name-only --diff-filter=U | grep -q ."
-format = "[󰊢 $git_status](bg:#de6145 fg:#101315)[](fg:#de6145 bg:#798186)"
+format = "[󰊢 $git_status](bg:{{ bright_red }} fg:{{ background }})[](fg:{{ bright_red }} bg:{{ accent }})"
 
 [custom.git_dirty_block]
 when = "git diff --quiet || exit 1"
-format = "[󰊢 $git_status](bg:#c9c2b4 fg:#101315)[](fg:#c9c2b4 bg:#798186)"
+format = "[󰊢 $git_status](bg:{{ bright_yellow }} fg:{{ background }})[](fg:{{ bright_yellow }} bg:{{ accent }})"
 
 [python]
 symbol = "🐍"
-style = "fg:#c9c2b4"
+style = "fg:{{ bright_yellow }}"
 format = "[ $symbol $version ]($style)"
 
 [nodejs]
 symbol = "🟢"
-style = "fg:#9fa5a9"
+style = "fg:{{ green }}"
 format = "[ $symbol $version ]($style)"
 
 [bun]
 symbol = "🥟"
-style = "fg:#aeaeae"
+style = "fg:{{ magenta }}"
 format = "[ $symbol $version ]($style)"
 
 [golang]
 symbol = "🐹"
-style = "fg:#cbc2be"
+style = "fg:{{ light_foreground }}"
 format = "[ $symbol $version ]($style)"
 
 [rust]
 symbol = "🦀"
-style = "fg:#de6145"
+style = "fg:{{ bright_red }}"
 format = "[ $symbol $version ]($style)"
 
 [zig]
 symbol = "⚡"
-style = "fg:#798186"
+style = "fg:{{ accent }}"
 format = "[ $symbol $version ]($style)"
 
 [fill]
@@ -68,11 +68,11 @@ style = "bg:none"
 # -----------------------------
 [username]
 show_always = true
-style_user = "bg:#798186 fg:#101315"
-format = "(fg:#798186)[ $user]($style)[](fg:#798186 bg:#101315)"
+style_user = "bg:{{ accent }} fg:{{ background }}"
+format = "(fg:{{ accent }})[ $user]($style)[](fg:{{ accent }} bg:{{ background }})"
 
 [directory]
-style = "bg:#101315 fg:#cbc2be"
+style = "bg:{{ background }} fg:{{ light_foreground }}"
 format = "[󰉋 $path]($style)"
 
 # -----------------------------
@@ -80,23 +80,23 @@ format = "[󰉋 $path]($style)"
 # -----------------------------
 [git_branch]
 symbol = ""
-style = "bg:#343d41 fg:#9fa5a9"
-format = "[](fg:#101315 bg:#343d41)[$symbol $branch]($style)"
+style = "bg:{{ selection }} fg:{{ green }}"
+format = "[](fg:{{ background }} bg:{{ selection }})[$symbol $branch]($style)"
 
 [git_status]
-style = "bg:#4b4e55 fg:#cacccc"
-format = "[](fg:#343d41 bg:#4b4e55)[󰊢 $all_status$ahead_behind]($style)[](fg:#4b4e55 bg:#101315)"
+style = "bg:{{ muted }} fg:{{ foreground }}"
+format = "[](fg:{{ selection }} bg:{{ muted }})[󰊢 $all_status$ahead_behind]($style)[](fg:{{ muted }} bg:{{ background }})"
 
-conflicted = "[!](fg:#de6145 bg:#4b4e55) "
-modified   = "[●](fg:#c9c2b4 bg:#4b4e55) "
-staged     = "[+](fg:#9fa5a9 bg:#4b4e55) "
-untracked  = "[?](fg:#cbc2be bg:#4b4e55) "
-deleted    = "[✖](fg:#de6145 bg:#4b4e55) "
-renamed    = "[➜](fg:#798186 bg:#4b4e55) "
-stashed    = "[≡](fg:#aeaeae bg:#4b4e55) "
+conflicted = "[!](fg:{{ bright_red }} bg:{{ muted }}) "
+modified   = "[●](fg:{{ bright_yellow }} bg:{{ muted }}) "
+staged     = "[+](fg:{{ green }} bg:{{ muted }}) "
+untracked  = "[?](fg:{{ light_foreground }} bg:{{ muted }}) "
+deleted    = "[✖](fg:{{ bright_red }} bg:{{ muted }}) "
+renamed    = "[➜](fg:{{ accent }} bg:{{ muted }}) "
+stashed    = "[≡](fg:{{ magenta }} bg:{{ muted }}) "
 
-ahead      = "[⇡](fg:#9fa5a9 bg:#4b4e55) "
-behind     = "[⇣](fg:#de6145 bg:#4b4e55) "
+ahead      = "[⇡](fg:{{ green }} bg:{{ muted }}) "
+behind     = "[⇣](fg:{{ bright_red }} bg:{{ muted }}) "
 
 # -----------------------------
 # Performance & Time
@@ -104,21 +104,21 @@ behind     = "[⇣](fg:#de6145 bg:#4b4e55) "
 
 [cmd_duration]
 min_time = 2000
-style = "bg:#798186 fg:#101315"
-format = "[ $duration ]($style)[](fg:#798186 bg:#101315)"
+style = "bg:{{ accent }} fg:{{ background }}"
+format = "[ $duration ]($style)[](fg:{{ accent }} bg:{{ background }})"
 
 [time]
 disabled = true
 time_format = "%H:%M"
-style = "bg:#080a0b fg:#cacccc"
-format = "[  $time]($style)[](fg:#080a0b)"
+style = "bg:{{ darker_background }} fg:{{ foreground }}"
+format = "[  $time]($style)[](fg:{{ darker_background }})"
 
 # -----------------------------
 # Prompt character
 # -----------------------------
 [character]
-success_symbol = "[❯](fg:#cbc2be)"
-error_symbol = "[❯❯](fg:#de6145)"
+success_symbol = "[❯](fg:{{ light_foreground }})"
+error_symbol = "[❯❯](fg:{{ bright_red }})"
 
 # -----------------------------
 # Error status
