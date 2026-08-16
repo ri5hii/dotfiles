@@ -16,6 +16,7 @@ hypr-omarchy/
 ├── omarchy-config/   # your shell/bar config ->  ~/.config/omarchy/
 ├── omarchy-state/    # current theme + toggles ->  ~/.local/state/omarchy/
 ├── install.sh        # one-shot replication installer
+├── update-dot.sh     # refresh the bundle from a live Omarchy device
 └── README.md
 ```
 
@@ -64,10 +65,25 @@ cd ~/.config/hypr-omarchy
 `install.sh` options:
 
 ```bash
-./install.sh --force        # overwrite in place, skip the .bak.<timestamp> backups
-./install.sh --no-profile   # don't touch ~/.profile (set OMARCHY_PATH yourself)
-./install.sh --dry-run      # print actions without changing anything
+./install.sh --force         # overwrite in place, skip the .bak.<timestamp> backups
+./install.sh --no-profile    # don't touch ~/.profile (set OMARCHY_PATH yourself)
+./install.sh --app-configs   # also deploy Omarchy's app config templates to ~/.config/
+./install.sh --systemd       # install Omarchy systemd user units (path-rewritten) + enable
+./install.sh --check-deps    # check dependencies and exit (nonzero if required deps missing); deploys nothing
+./install.sh --dry-run       # print actions without changing anything
 ```
+
+`--check-deps` verifies required commands (Hyprland 0.56+ with Lua config
+support, `uwsm`, `uwsm-app`, `quickshell`, `notify-send`, `bash`), reports
+optional keybinding helpers, and exits 0/1 without touching the system — run it
+first on the target to see what to install.
+
+`--app-configs` deploys the bundled templates for terminals, starship, git, tmux,
+btop, lazygit, fcitx5, wireplumber, etc. (everything under `omarchy/config/`
+except `hypr/` and `omarchy/`, which are always deployed from your customized
+versions). `--systemd` installs the shipped user units (crash-watch, sleep-lock,
+speaker-tuning, ...) with their `ExecStart` paths rewritten from `/usr/bin/`
+to this bundle, so they run without a system-wide Omarchy install.
 
 ### Manual
 
@@ -95,6 +111,86 @@ omarchy version
 omarchy theme list
 ```
 
+## After installing — things you do yourself
+
+`install.sh` deploys the configs and wires up the environment, but a few things
+are inherently manual — they need a package manager, your identity, or root:
+
+- **System packages the bundle can't ship**: Hyprland built with Lua config
+  support (0.56+, `-DConfig_LUA=true` — this may mean building it yourself or a
+  distro build with that flag), `uwsm`, `quickshell`, and
+  `power-profiles-daemon` (enable its service). Common helpers: `notify-send`
+  (libnotify), `findutils`, `bash`, `lua`.
+- **A Nerd Font** (e.g. JetBrainsMono Nerd Font): the bar/OSD style expects one
+  and falls back to `monospace` without it.
+- **Optional per-keybinding helpers**, if you use those keybindings:
+  `pamixer`/`wpctl`, `brightnessctl`, `grim`/`slurp`/`wl-copy` (screenshots),
+  `udiskie`, `playerctl`, a browser.
+- **Git identity** (Omarchy's provisioning normally sets this for you):
+  ```bash
+  git config --global user.name "Your Name"
+  git config --global user.email "you@host"
+  ```
+- **Shell plugins**: `~/.config/omarchy/plugins/` is deployed empty — clone the
+  ones you want:
+  ```bash
+  $OMARCHY_PATH/bin/omarchy plugin list      # what's available
+  $OMARCHY_PATH/bin/omarchy plugin clone <name> ...
+  ```
+- **Optional user bits** (see `omarchy/install/user/`): default keyring
+  (`default-keyring.sh`), `mise` runtime manager (`mise.sh`), chromium defaults
+  (`chromium.sh`).
+- **OS-level integration (root)**: enable `power-profiles-daemon.service`; the
+  optional systemd user units via `install.sh --systemd`; boot/login theming
+  (`omarchy/default/{sddm,limine,plymouth}`) if you want it beyond the desktop.
+- **First boot**: log out and back in so `~/.profile` PATH exports apply, start
+  the session from the installed `omarchy.desktop` (uwsm), then sanity check:
+  ```bash
+  hyprctl configerrors && omarchy version && omarchy theme list
+  ```
+
+## Updating the bundle from a device
+
+`update-dot.sh` does the reverse of `install.sh`: run it on any machine and it
+re-captures that machine's Omarchy state back into the bundle. It is
+device-aware — each source is refreshed only if present, and missing sources are
+reported and skipped (e.g. on a non-Omarchy box the `omarchy/` tree and `bin/`
+are skipped, but your `hypr/` and `omarchy-config/` are still captured).
+
+```bash
+cd ~/.config/hypr-omarchy
+./update-dot.sh --dry-run          # preview: live log, nothing written
+./update-dot.sh                    # apply the refresh
+./update-dot.sh --prune            # mirror sources: drop files no longer on the device
+```
+
+`update-dot.sh` options:
+
+```bash
+./update-dot.sh --dry-run   # show what would change without writing anything
+./update-dot.sh --prune     # --delete mirroring (removes stale bundle files)
+./update-dot.sh --no-log    # don't write update-dot.log
+./update-dot.sh --help
+```
+
+Each run streams a concise, colorized live log to the terminal (color is skipped
+when stdout is not a TTY) and writes `update-dot.log` (in the bundle dir,
+gitignored), then prints a final report of what changed per source with timings.
+There is no auto-commit; when the bundle lives in a git worktree the script
+prints the changed-file status for you to review and commit.
+
+What it captures (when present on the device):
+
+| Source on device                                   | Bundle target        |
+|----------------------------------------------------|----------------------|
+| `/usr/share/omarchy/` (live Omarchy install)       | `omarchy/` (minus `bin/`) |
+| `/usr/bin/omarchy*` + `hyprland-preview-share-picker` | `omarchy/bin/` (real copies) |
+| `~/.config/hypr/`                                  | `hypr/`              |
+| `~/.config/omarchy/`                               | `omarchy-config/`    |
+| `~/.local/state/omarchy/{current,toggles}`         | `omarchy-state/`     |
+
+Runtime junk (clipboard history, notifications, agents, logs) is never captured.
+
 ## What's replicated
 
 - Window manager: keybindings, monitors, input, look-n-feel, window rules/app
@@ -110,9 +206,12 @@ omarchy theme list
 
 - **Shell plugins**: `~/.config/omarchy/plugins/` is included but empty here;
   clone any plugins with `omarchy plugin clone ...` on the target.
-- **Distro/system services** the helpers expect: systemd user services, Power
-  Profiles Daemon (`power-profiles-daemon`), a notification daemon (Quickshell),
-  and the font icon set used by the bar are not shipped by this bundle.
+- **Distro/system services** the helpers expect: Power Profiles Daemon
+  (`power-profiles-daemon`), a notification daemon (Quickshell), and the font
+  icon set used by the bar are not shipped by this bundle. Systemd user services
+  are bundled and can be installed with `install.sh --systemd` (path-rewritten
+  to the bundle), but any that need fcitx5/tailscale/Bluetooth also require
+  those programs installed.
 - `omarchy-system-factory-reset` / `omarchy-upgrade-*` are Arch/Omarchy-specific
   and won't apply on other distros.
 - `hyprland-preview-share-picker` is a compiled binary bundled here, but your
@@ -130,7 +229,9 @@ $OMARCHY_PATH/bin/omarchy refresh hyprland  # reset Hyprland Lua configs
 
 ## Source of truth
 
-This bundle is a snapshot. To capture a fresh one from a live Omarchy system:
+This bundle is a snapshot. `update-dot.sh` automates the recapture below — these
+commands are what it runs under the hood. To capture a fresh one from a live
+Omarchy system:
 
 ```bash
 mkdir -p ~/.config/hypr-omarchy

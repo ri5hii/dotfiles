@@ -41,8 +41,6 @@ alias gob="go build ./..."
 # alias dnfundo="sudo dnf history undo last"
 # alias dnfclean="sudo dnf clean all"
 
-alias ls="eza --group-directories-first"
-alias tree="eza --tree"
 alias duh="du -h --max-depth=1"
 alias cls="clear"
 alias cat="bat -P"
@@ -51,6 +49,22 @@ alias find="fd"
 alias f="fd | fzf"
 alias fe="fd | fzf | xargs nvim"
 alias se="rg --line-number . | fzf | cut -d: -f1,2 | sed 's/:/ +/' | xargs nvim"
+
+function ls
+    if test (count $argv) -eq 0
+        eza --group-directories-first .
+    else
+        eza --group-directories-first $argv
+    end
+end
+
+function tree
+    if test (count $argv) -eq 0
+        eza --tree .
+    else
+        eza --tree $argv
+    end
+end
 
 # Functions
 function mkcd
