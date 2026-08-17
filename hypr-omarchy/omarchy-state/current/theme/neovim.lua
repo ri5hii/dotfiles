@@ -1,9 +1,12 @@
 return {
-  { "ficcdaf/ashen.nvim" },
+  {
+    "OldJobobo/retro-82.nvim",
+    priority = 1000,
+  },
   {
     "LazyVim/LazyVim",
     opts = {
-      colorscheme = "ashen",
+      colorscheme = "retro-82",
     },
-  }
+  },
 }

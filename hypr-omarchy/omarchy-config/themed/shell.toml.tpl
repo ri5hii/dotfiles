@@ -4,11 +4,11 @@
 
 [bar]
 # Alpha companions (where present) range from 0 (invisible) to 1 (opaque).
-background       = "#05182e"
+background       = "{{ background }}"
 background-alpha = 1.0
-text             = "#f6dcac"
+text             = "{{ foreground }}"
 # Modules calling attention to themselves (recording, voxtype, alerts, updates)
-active           = "#f85525"
+active           = "{{ red }}"
 # Cross-axis size at font base-size 12. size-horizontal is the height of
 # top/bottom bars; size-vertical is the width of left/right bars. With
 # scale-with-font enabled, these grow/shrink with [font] base-size.
@@ -20,8 +20,8 @@ size-vertical    = 28
 # Shared Hyprland-derived border tokens. Surface sections reference these so
 # lock, notifications, popups, and menu-style cards stay aligned with the
 # current Hyprland active-border gradient.
-active-border            = "#faa968"
-active-border-foreground = "#f6dcac"
+active-border            = "{{ shell_gradient hyprland_active_border accent }}"
+active-border-foreground = "{{ shell_gradient hyprland_active_border foreground }}"
 
 [controls]
 # Shared state tokens for interactive control chrome (buttons, dropdowns,
@@ -31,32 +31,32 @@ active-border-foreground = "#f6dcac"
 # N, "Y X", "T X B", or "T R B L". Per-side keys like
 # normal-border-width-left override the list. Each *-border accepts either a
 # solid color or a Hyprland-style gradient, e.g. "rgba(...) rgba(...) 45deg".
-normal-color        = "#f6dcac"
+normal-color        = "{{ foreground }}"
 normal-fill-alpha   = 0.04
-normal-border       = "#f6dcac"
+normal-border       = "{{ foreground }}"
 normal-border-width = 1
 normal-border-alpha = 0.4
 
 # Hover-cursor: mouse hover and the panel keyboard cursor.
-hover-cursor-color        = "#f6dcac"
+hover-cursor-color        = "{{ foreground }}"
 hover-cursor-fill-alpha   = 0.08
-hover-cursor-border       = "#f6dcac"
+hover-cursor-border       = "{{ foreground }}"
 hover-cursor-border-width = 1
 hover-cursor-border-alpha = 0.25
 
 # Focus: Qt activeFocus. Mirror the hover-cursor values by default so
 # mouse hover, keyboard cursor, and tab focus all read as the same state
 # — themes that want focus to stand out override these four lines.
-focus-color        = "#f6dcac"
+focus-color        = "{{ foreground }}"
 focus-fill-alpha   = 0.08
-focus-border       = "#f6dcac"
+focus-border       = "{{ foreground }}"
 focus-border-width = 1
 focus-border-alpha = 0.25
 
 # Selected: persistent chosen/current state.
-selected-color        = "#f6dcac"
+selected-color        = "{{ foreground }}"
 selected-fill-alpha   = 0.18
-selected-border       = "#f6dcac"
+selected-border       = "{{ foreground }}"
 selected-border-width = 0
 selected-border-alpha = 1.0
 
@@ -124,9 +124,9 @@ base-size = 12
 # Border accepts either a solid color or a Hyprland-style gradient. Border
 # widths accept one CSS-style scalar/list: N, "Y X", "T X B", or "T R B L";
 # individual border-width-top/right/bottom/left keys override the list.
-background       = "#05182e"
+background       = "{{ background }}"
 background-alpha = 1.0
-text             = "#f6dcac"
+text             = "{{ foreground }}"
 border           = "hyprland.active-border"
 border-alpha     = 1.0
 # border-width     = 2
@@ -134,38 +134,38 @@ border-alpha     = 1.0
 [tooltip]
 # Hover tooltips across the bar, panels, and buttons. background-alpha of
 # 0.97 mirrors the legacy hard-coded tooltip opacity.
-background       = "#05182e"
+background       = "{{ background }}"
 background-alpha = 0.97
-text             = "#f6dcac"
+text             = "{{ foreground }}"
 border           = "hyprland.active-border-foreground"
 border-alpha     = 1.0
 
 [notifications]
-background       = "#05182e"
+background       = "{{ background }}"
 background-alpha = 1.0
-text             = "#f6dcac"
+text             = "{{ foreground }}"
 # Conventionally matches the Hyprland active-window border. Border accepts
 # either a solid color or the full active-border gradient.
 border           = "hyprland.active-border"
 border-alpha     = 1.0
 # border-width     = 2
-countdown        = "#faa968"
+countdown        = "{{ accent }}"
 
 [launcher]
 # Same six tokens as [menu], applied to the launcher overlay. Alpha
 # companions go from 0 (invisible) to 1 (opaque). scrim is the full-screen
 # dim layer behind the card; background is the card itself. Defaults
 # mirror [menu] with the card at 0.95 to preserve the legacy translucency.
-background                = "#05182e"
+background                = "{{ background }}"
 background-alpha          = 0.95
-text                      = "#f6dcac"
+text                      = "{{ foreground }}"
 border                    = "hyprland.active-border-foreground"
 border-alpha              = 1.0
-scrim                     = "#05182e"
+scrim                     = "{{ background }}"
 scrim-alpha               = 0.5
-selected-background       = "#f6dcac"
+selected-background       = "{{ foreground }}"
 selected-background-alpha = 0.08
-selected-text             = "#faa968"
+selected-text             = "{{ accent }}"
 selected-border           = "hyprland.active-border-foreground"
 selected-border-alpha     = 0.25
 
@@ -173,16 +173,16 @@ selected-border-alpha     = 0.25
 # Cards, rows, and selected-row treatment. Alpha companions (where present)
 # go from 0 (invisible) to 1 (opaque). scrim is the full-screen dim layer
 # behind the card. Clipboard and emojis inherit these tokens.
-background                = "#05182e"
+background                = "{{ background }}"
 background-alpha          = 1.0
-text                      = "#f6dcac"
+text                      = "{{ foreground }}"
 border                    = "hyprland.active-border-foreground"
 border-alpha              = 1.0
-scrim                     = "#05182e"
+scrim                     = "{{ background }}"
 scrim-alpha               = 0.5
-selected-background       = "#f6dcac"
+selected-background       = "{{ foreground }}"
 selected-background-alpha = 0.08
-selected-text             = "#faa968"
+selected-text             = "{{ accent }}"
 selected-border           = "hyprland.active-border-foreground"
 selected-border-alpha     = 0.25
 
@@ -192,17 +192,17 @@ selected-border-alpha     = 0.25
 # text-error tints the lock icon, password text, and placeholder when
 # authentication fails. border-alpha applies to both border and
 # border-error (the two states are mutually exclusive in time).
-background       = "#05182e"
+background       = "{{ background }}"
 background-alpha = 1.0
-text             = "#f6dcac"
-text-error       = "#f85525"
+text             = "{{ foreground }}"
+text-error       = "{{ red }}"
 border           = "hyprland.active-border"
-border-error     = "#f85525"
+border-error     = "{{ red }}"
 border-alpha     = 1.0
-scrim            = "#05182e"
+scrim            = "{{ background }}"
 scrim-alpha      = 0.5
 # accent is the lock-icon glyph color + text-selection tint.
-accent           = "#faa968"
+accent           = "{{ accent }}"
 
 [lock]
 # Lock screen password input. background/background-alpha control the
@@ -210,17 +210,17 @@ accent           = "#faa968"
 # through idle, typing/authenticating, and wrong-password states.
 # border-alpha applies to all three border states (they are mutually
 # exclusive in time).
-background       = "#05182e"
+background       = "{{ background }}"
 background-alpha = 0.8
-text             = "#f6dcac"
-placeholder      = "#a49981"
-text-error       = "#f85525"
+text             = "{{ foreground }}"
+placeholder      = "{{ mix foreground background 34% }}"
+text-error       = "{{ red }}"
 border           = "hyprland.active-border"
 border-active    = "hyprland.active-border"
-border-error     = "#f85525"
+border-error     = "{{ red }}"
 border-alpha     = 1.0
 # selection is the text-selection tint inside the input field.
-selection        = "#faa968"
+selection        = "{{ accent }}"
 selection-alpha  = 0.45
 
 [image-picker]
@@ -228,10 +228,10 @@ selection-alpha  = 0.45
 # the full-screen wash. Per-slice dim overlays and text outlines on top
 # of the scrim track the foundational background color directly.
 # unselected-border-alpha softens carousel slices that aren't selected.
-scrim                   = "#05182e"
+scrim                   = "{{ background }}"
 scrim-alpha             = 0.5
-text                    = "#f6dcac"
-selected-border         = "#faa968"
+text                    = "{{ foreground }}"
+selected-border         = "{{ accent }}"
 selected-border-alpha   = 1.0
-unselected-border       = "#f6dcac"
+unselected-border       = "{{ foreground }}"
 unselected-border-alpha = 0.28

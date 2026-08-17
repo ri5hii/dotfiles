@@ -23,40 +23,40 @@ command = "false"
 
 [custom.git_danger]
 when = "git diff --name-only --diff-filter=U | grep -q ."
-format = "[󰊢 $git_status](bg:#de6145 fg:#101315)[](fg:#de6145 bg:#798186)"
+format = "[󰊢 $git_status](bg:#f85525 fg:#05182e)[](fg:#f85525 bg:#faa968)"
 
 [custom.git_dirty_block]
 when = "git diff --quiet || exit 1"
-format = "[󰊢 $git_status](bg:#c9c2b4 fg:#101315)[](fg:#c9c2b4 bg:#798186)"
+format = "[󰊢 $git_status](bg:#e97b3c fg:#05182e)[](fg:#e97b3c bg:#faa968)"
 
 [python]
 symbol = "🐍"
-style = "fg:#c9c2b4"
+style = "fg:#e97b3c"
 format = "[ $symbol $version ]($style)"
 
 [nodejs]
 symbol = "🟢"
-style = "fg:#9fa5a9"
+style = "fg:#028391"
 format = "[ $symbol $version ]($style)"
 
 [bun]
 symbol = "🥟"
-style = "fg:#aeaeae"
+style = "fg:#3f8f8a"
 format = "[ $symbol $version ]($style)"
 
 [golang]
 symbol = "🐹"
-style = "fg:#cbc2be"
+style = "fg:#a7c9c6"
 format = "[ $symbol $version ]($style)"
 
 [rust]
 symbol = "🦀"
-style = "fg:#de6145"
+style = "fg:#f85525"
 format = "[ $symbol $version ]($style)"
 
 [zig]
 symbol = "⚡"
-style = "fg:#798186"
+style = "fg:#faa968"
 format = "[ $symbol $version ]($style)"
 
 [fill]
@@ -68,35 +68,35 @@ style = "bg:none"
 # -----------------------------
 [username]
 show_always = true
-style_user = "bg:#798186 fg:#101315"
-format = "(fg:#798186)[ $user]($style)[](fg:#798186 bg:#101315)"
+style_user = "bg:#faa968 fg:#05182e"
+format = "(fg:#faa968)[ $user]($style)[](fg:#faa968 bg:#05182e)"
 
 [directory]
-style = "bg:#101315 fg:#cbc2be"
-format = "[󰉋 $path]($style)[](fg:#101315 bg:#343d41)"
+style = "bg:#05182e fg:#a7c9c6"
+format = "[󰉋 $path]($style)"
 
 # -----------------------------
 # Git
 # -----------------------------
 [git_branch]
 symbol = ""
-style = "bg:#343d41 fg:#9fa5a9"
-format = "[$symbol $branch]($style)[](fg:#343d41 bg:#4b4e55)"
+style = "bg:#134e5a fg:#028391"
+format = "[](fg:#05182e bg:#134e5a)[$symbol $branch]($style)"
 
 [git_status]
-style = "bg:#4b4e55 fg:#cacccc"
-format = "[󰊢 $all_status$ahead_behind]($style)[](fg:#4b4e55)"
+style = "bg:#2a6b78 fg:#f6dcac"
+format = "[](fg:#134e5a bg:#2a6b78)[󰊢 $all_status$ahead_behind]($style)[](fg:#2a6b78 bg:#05182e)"
 
-conflicted = "[!](fg:#de6145 bg:#4b4e55) "
-modified   = "[●](fg:#c9c2b4 bg:#4b4e55) "
-staged     = "[+](fg:#9fa5a9 bg:#4b4e55) "
-untracked  = "[?](fg:#cbc2be bg:#4b4e55) "
-deleted    = "[✖](fg:#de6145 bg:#4b4e55) "
-renamed    = "[➜](fg:#798186 bg:#4b4e55) "
-stashed    = "[≡](fg:#aeaeae bg:#4b4e55) "
+conflicted = "[!](fg:#f85525 bg:#2a6b78) "
+modified   = "[●](fg:#e97b3c bg:#2a6b78) "
+staged     = "[+](fg:#028391 bg:#2a6b78) "
+untracked  = "[?](fg:#a7c9c6 bg:#2a6b78) "
+deleted    = "[✖](fg:#f85525 bg:#2a6b78) "
+renamed    = "[➜](fg:#faa968 bg:#2a6b78) "
+stashed    = "[≡](fg:#3f8f8a bg:#2a6b78) "
 
-ahead      = "[⇡](fg:#9fa5a9 bg:#4b4e55) "
-behind     = "[⇣](fg:#de6145 bg:#4b4e55) "
+ahead      = "[⇡](fg:#028391 bg:#2a6b78) "
+behind     = "[⇣](fg:#f85525 bg:#2a6b78) "
 
 # -----------------------------
 # Performance & Time
@@ -104,21 +104,21 @@ behind     = "[⇣](fg:#de6145 bg:#4b4e55) "
 
 [cmd_duration]
 min_time = 2000
-style = "bg:#798186 fg:#101315"
-format = "[ $duration ]($style)[](fg:#798186 bg:#080a0b)"
+style = "bg:#faa968 fg:#05182e"
+format = "[ $duration ]($style)[](fg:#faa968 bg:#05182e)"
 
 [time]
 disabled = true
 time_format = "%H:%M"
-style = "bg:#080a0b fg:#cacccc"
-format = "[  $time]($style)[](fg:#080a0b)"
+style = "bg:#020c17 fg:#f6dcac"
+format = "[  $time]($style)[](fg:#020c17)"
 
 # -----------------------------
 # Prompt character
 # -----------------------------
 [character]
-success_symbol = "[❯](fg:#cbc2be)"
-error_symbol = "[❯❯](fg:#de6145)"
+success_symbol = "[❯](fg:#a7c9c6)"
+error_symbol = "[❯❯](fg:#f85525)"
 
 # -----------------------------
 # Error status
