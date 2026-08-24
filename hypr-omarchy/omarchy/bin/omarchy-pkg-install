@@ -1,11 +1,36 @@
 #!/bin/bash
 
-# omarchy:summary=Show a fuzzy-finder TUI for picking new Arch and OPR packages to install.
+# omarchy:summary=Show a fuzzy-finder TUI for picking new packages to install (distro-agnostic).
 # omarchy:requires-sudo=true
+
+backend=$(omarchy-pm backend)
+
+case "$backend" in
+  pacman)
+    pkg_list_cmd='pacman -Slq'
+    preview_cmd='pacman -Sii {1}'
+    ;;
+  dnf)
+    pkg_list_cmd='dnf repoquery --available --qf "%{NAME}"'
+    preview_cmd='dnf info {1}'
+    ;;
+  apt)
+    pkg_list_cmd='apt-cache dumpavail | sed -n "s/^Package: //p"'
+    preview_cmd='apt-cache show {1} | head -n 40'
+    ;;
+  flatpak)
+    pkg_list_cmd='flatpak remote-ls --columns=application "$(flatpak remotes --columns=name 2>/dev/null | head -1)"'
+    preview_cmd='flatpak info {1}'
+    ;;
+  *)
+    echo "Error: no supported package manager found" >&2
+    exit 1
+    ;;
+esac
 
 fzf_args=(
   --multi
-  --preview 'pacman -Sii {1}'
+  --preview "$preview_cmd"
   --preview-label='alt-p: toggle description, alt-j/k: scroll, tab: multi-select'
   --preview-label-pos='bottom'
   --preview-window 'down:65%:wrap'
@@ -15,12 +40,12 @@ fzf_args=(
   --color 'pointer:green,marker:green'
 )
 
-pkg_names=$(pacman -Slq | fzf "${fzf_args[@]}")
+pkg_names=$(eval "$pkg_list_cmd" | fzf "${fzf_args[@]}")
 
 if [[ -n $pkg_names ]]; then
   source omarchy-sudo-keepalive
 
-  # Convert newline-separated selections to space-separated for pacman
-  echo "$pkg_names" | tr '\n' ' ' | xargs sudo pacman -S --noconfirm
+  # Convert newline-separated selections to space-separated for the backend
+  echo "$pkg_names" | tr '\n' ' ' | xargs omarchy-pm install
   omarchy-show-done
 fi

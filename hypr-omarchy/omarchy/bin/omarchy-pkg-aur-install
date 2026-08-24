@@ -3,6 +3,11 @@
 # omarchy:summary=Show a fuzzy-finder TUI for picking new AUR packages to install.
 # omarchy:requires-sudo=true
 
+if ! command -v yay >/dev/null 2>&1; then
+  echo -e "\033[31mError: AUR installs require yay (Arch Linux only)\033[0m" >&2
+  exit 1
+fi
+
 fzf_args=(
   --multi
   --preview 'yay -Siia {1}'

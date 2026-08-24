@@ -41,6 +41,9 @@ alias gob="go build ./..."
 # alias dnfundo="sudo dnf history undo last"
 # alias dnfclean="sudo dnf clean all"
 
+#System Arch
+alias upgr="sudo pacman -Syu"
+
 alias duh="du -h --max-depth=1"
 alias cls="clear"
 alias cat="bat -P"
@@ -72,9 +75,6 @@ function mkcd
     cd $argv
 end
 
-
 function cheatsheet
     cat /home/root-0/.config/fish/config.fish
 end
-
-

@@ -17,8 +17,22 @@ hypr-omarchy/
 ├── omarchy-state/    # current theme + toggles ->  ~/.local/state/omarchy/
 ├── install.sh        # one-shot replication installer
 ├── update-dot.sh     # refresh the bundle from a live Omarchy device
+├── docs/             # cross-distro rework guides (PLAN.md + docs/*)
 └── README.md
 ```
+
+## Cross-distro rework
+
+`PLAN.md` is the locked design for running the full Omarchy flow (menu, shell,
+install/update/remove) on any Hyprland distro, not just Arch. Guides in `docs/`:
+
+- `pkgmap.md` — translate Arch package names to your distro/Flatpak (`omarchy-config/pkgmap/pkgmap.conf`)
+- `system-update.md` — make the menu's System Update run your distro's update (`omarchy-config/system-update.conf`)
+- `distro-support.md` — per-distro dependency matrix + quickshell build guide
+- `menu-override.md` — own the SUPER+SPACE menu via `omarchy-config/omarchy-menu.jsonc`
+
+> Status: plan + docs done. Implementation (backend layer, pkgmap, System Update,
+> menu override) is the next phase — these guides describe the target behavior.
 
 How the pieces fit together (the config chain that makes this work):
 

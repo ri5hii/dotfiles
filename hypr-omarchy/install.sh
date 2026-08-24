@@ -207,6 +207,26 @@ deploy_dir "$BUNDLE_DIR/omarchy-state"   "$HOME/.local/state/omarchy"
 deploy_file "$OMARCHY_PATH/default/xcompose" "$HOME/.XCompose"
 deploy_dir "$OMARCHY_PATH/default/wayland-sessions" "$HOME/.local/share/wayland-sessions"
 
+# Verify the bundle's bash/uwsm configs are self-locating (no hardcoded
+# /usr/share/omarchy paths used for sourcing). This catches stale captures
+# from update-dot.sh. Comparison strings (like _SYSTEM_DEFAULT) are fine.
+_bootstrap_ok=1
+for _f in "$OMARCHY_PATH/default/bashrc" \
+          "$OMARCHY_PATH/default/bash/env-bootstrap" \
+          "$OMARCHY_PATH/default/bash/envs" \
+          "$OMARCHY_PATH/default/uwsm/env.d/10-omarchy"; do
+  if [[ -f "$_f" ]] && grep -qE '(source|\.|[[:space:]]-r[[:space:]]|[[:space:]]-f[[:space:]]) /usr/share/omarchy' "$_f" 2>/dev/null; then
+    echo "  WARNING: $(basename "$_f") still sources/tests /usr/share/omarchy — should be self-locating" >&2
+    _bootstrap_ok=0
+  fi
+done
+unset _f
+if ((_bootstrap_ok)); then
+  echo "  bootstrap configs verified (self-locating)"
+else
+  echo " Hint: these files should use BASH_SOURCE[0] to find env-bootstrap." >&2
+fi
+
 if ((APP_CONFIGS == 1)); then
   echo "Deploying app config templates..."
   for entry in "$OMARCHY_PATH"/config/*; do
@@ -251,7 +271,9 @@ fi
 
 if ((PROFILE == 1)); then
   PROFILE_FILE="$HOME/.profile"
+  BASHRC_FILE="$HOME/.bashrc"
   MARKER="# >>> omarchy replication bundle >>>"
+
   if ((DRY_RUN)); then
     echo "Profile: would add OMARCHY_PATH + PATH exports to $PROFILE_FILE"
   elif grep -qF -- "$MARKER" "$PROFILE_FILE" 2>/dev/null; then
@@ -265,6 +287,26 @@ if ((PROFILE == 1)); then
       echo "# <<< omarchy replication bundle <<<"
     } >>"$PROFILE_FILE"
     echo "Profile: added OMARCHY_PATH + PATH exports to $PROFILE_FILE"
+  fi
+
+  # Non-login interactive shells (terminals outside a login session) never
+  # read ~/.profile, so ~/.bashrc must carry the bundle path too. The path
+  # is baked in at install time — the bundle's own bashrc cannot be copied
+  # verbatim because its self-location breaks when relocated to ~/.bashrc.
+  if ((DRY_RUN)); then
+    echo "Bashrc: would add OMARCHY_PATH + PATH exports + bundle bashrc source to $BASHRC_FILE"
+  elif grep -qF -- "$MARKER" "$BASHRC_FILE" 2>/dev/null; then
+    echo "Bashrc: $BASHRC_FILE already configured, skipping"
+  else
+    {
+      echo ""
+      echo "$MARKER"
+      printf 'export OMARCHY_PATH="%s"\n' "$OMARCHY_PATH"
+      printf 'export PATH="$OMARCHY_PATH/bin:$PATH"\n'
+      printf '[[ -r "$OMARCHY_PATH/default/bashrc" && "$HOME/.bashrc" != "$OMARCHY_PATH/default/bashrc" ]] && source "$OMARCHY_PATH/default/bashrc"\n'
+      echo "# <<< omarchy replication bundle <<<"
+    } >>"$BASHRC_FILE"
+    echo "Bashrc: added OMARCHY_PATH + PATH exports + bundle bashrc source to $BASHRC_FILE"
   fi
 fi
 

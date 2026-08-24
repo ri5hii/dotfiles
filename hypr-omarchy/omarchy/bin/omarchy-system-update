@@ -1,0 +1,44 @@
+#!/bin/bash
+
+# omarchy:summary=Run the user-configured system update steps from system-update.conf
+# omarchy:requires-sudo=true
+
+# Runs every command line in ~/.config/omarchy/system-update.conf in order.
+#   - '#' starts a comment (full-line)
+#   - '!' at line start marks a disabled step (skipped until un-commented)
+#   - any other line is executed via bash -c (pipes and && work)
+#   - a failing step stops the update and exits 1
+# Absent or empty file: no system update (Omarchy itself still updates).
+# See docs/system-update.md.
+
+set -u
+
+CONF="$HOME/.config/omarchy/system-update.conf"
+
+if [[ ! -f $CONF ]]; then
+  echo -e "\e[33mNo system-update.conf found; skipping system update (Omarchy itself still updates).\e[0m"
+  exit 0
+fi
+
+steps=0
+while IFS= read -r line || [[ -n $line ]]; do
+  line="${line%%#*}"
+  line="${line#"${line%%[![:space:]]*}"}"
+  line="${line%"${line##*[![:space:]]}"}"
+  [[ -n $line ]] || continue
+  [[ $line != "!"* ]] || continue
+  steps=$((steps + 1))
+  echo -e "\e[32m\n>> $line\e[0m"
+  if ! bash -c "$line"; then
+    echo -e "\e[31mSystem update step failed, stopping the update:\e[0m $line" >&2
+    exit 1
+  fi
+done <"$CONF"
+
+if (( steps > 0 )); then
+  echo -e "\e[32m\nSystem update complete ($steps step(s)).\e[0m"
+else
+  echo -e "\e[33mNo system update steps configured (empty system-update.conf).\e[0m"
+fi
+
+exit 0

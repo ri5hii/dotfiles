@@ -1,0 +1,3 @@
+*.sh linguist-generated
+*.bash linguist-generated
+*.QML linguist-generated

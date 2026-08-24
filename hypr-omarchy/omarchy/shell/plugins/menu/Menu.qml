@@ -49,6 +49,11 @@ Item {
   // path doesn't have to shell out to bash + jq on every open.
   property string defaultMenuPath: omarchyPath + "/default/omarchy/omarchy-menu.jsonc"
   property string userMenuPath: Quickshell.env("HOME") + "/.config/omarchy/extensions/omarchy-menu.jsonc"
+  // Full-replacement menu: when this file exists, it replaces the runtime
+  // default entirely (the extensions file above still merges on top).
+  // See docs/menu-override.md.
+  property string replacementMenuPath: Quickshell.env("HOME") + "/.config/omarchy/omarchy-menu.jsonc"
+  property bool replacementMenuActive: false
   property var defaultMenuItems: []
   property var userMenuItems: []
   property bool opened: false
@@ -917,14 +922,43 @@ Item {
   }
 
   // The JSONC sources are watched so live edits to the default file (or the
-  // user extension at ~/.config/omarchy/extensions/omarchy-menu.jsonc) take
-  // effect without restarting the shell.
+  // user extension at ~/.config/omarchy/extensions/omarchy-menu.jsonc, or a
+  // replacement at ~/.config/omarchy/omarchy-menu.jsonc) take effect without
+  // restarting the shell.
   FileView {
     id: defaultMenuFile
     path: root.defaultMenuPath
     watchChanges: true
     printErrors: false
-    onLoaded: { root.defaultMenuItems = root.parseMenuJsonc(text()); root.rebuildItemsFromSources() }
+    onLoaded: {
+      // A replacement file suppresses the runtime default entirely.
+      if (root.replacementMenuActive) return
+      root.defaultMenuItems = root.parseMenuJsonc(text())
+      root.rebuildItemsFromSources()
+    }
+    onFileChanged: reload()
+  }
+
+  // Full-replacement override: when this file exists, its contents replace
+  // the runtime default (the extensions file still merges on top). Deleting
+  // it live falls back to the runtime default immediately.
+  FileView {
+    id: replacementMenuFile
+    path: root.replacementMenuPath
+    watchChanges: true
+    printErrors: false
+    onLoaded: {
+      root.replacementMenuActive = true
+      root.defaultMenuItems = root.parseMenuJsonc(text())
+      root.rebuildItemsFromSources()
+    }
+    onLoadFailed: {
+      if (root.replacementMenuActive) {
+        root.replacementMenuActive = false
+        root.defaultMenuItems = []
+        root.rebuildItemsFromSources()
+      }
+    }
     onFileChanged: reload()
   }
 
