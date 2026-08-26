@@ -15,12 +15,5 @@
 !opencode/
 !opencode/opencode.jsonc
 
-!hyprland/
-!hyprland/**
-
-!hypr-omarchy/
-!hypr-omarchy/**
-hypr-omarchy/update-dot.log
-
 !.gitattributes
 

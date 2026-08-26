@@ -1,6 +1,0 @@
-#!/bin/bash
-
-# omarchy:summary=Returns true if all of the named packages are installed on the system (or false if any of them are missing).
-# omarchy:args=<packages...>
-
-omarchy-pm is-present "$@"
