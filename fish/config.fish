@@ -32,17 +32,17 @@ alias gof="go fmt ./..."
 alias gob="go build ./..."
 
 # System (Fedora-specific; kept as reference for this Arch system)
-# alias upg="sudo dnf upgrade -y"
-# alias upgr="sudo dnf upgrade --refresh -y"
-# alias upgc="sudo dnf upgrade --assumeno"
-# alias dsync="sudo dnf dsync --refresh && sudo dnf autoremove"
-# alias hist="sudo dnf history"
-# alias histi="sudo dnf history info"
-# alias dnfundo="sudo dnf history undo last"
-# alias dnfclean="sudo dnf clean all"
+alias upg="sudo dnf upgrade -y"
+alias upgr="sudo dnf upgrade --refresh -y"
+alias upgc="sudo dnf upgrade --assumeno"
+alias dsync="sudo dnf dsync --refresh && sudo dnf autoremove"
+alias hist="sudo dnf history"
+alias histi="sudo dnf history info"
+alias dnfundo="sudo dnf history undo last"
+alias dnfclean="sudo dnf clean all"
 
 #System Arch
-alias upgr="sudo pacman -Syu"
+#alias upgr="sudo pacman -Syu"
 
 alias duh="du -h --max-depth=1"
 alias cls="clear"

@@ -69,10 +69,10 @@ style = "bg:none"
 [username]
 show_always = true
 style_user = "bg:#798186 fg:#101315"
-format = "(fg:#798186)[ $user]($style)[](fg:#798186 bg:#101315)"
+format = "(fg:#798186)[ $user]($style)[](fg:#798186 bg:#282c34)"
 
 [directory]
-style = "bg:#101315 fg:#cbc2be"
+style = "bg:#282c34 fg:#cbc2be"
 format = "[󰉋 $path]($style)"
 
 # -----------------------------
@@ -81,11 +81,11 @@ format = "[󰉋 $path]($style)"
 [git_branch]
 symbol = ""
 style = "bg:#343d41 fg:#9fa5a9"
-format = "[](fg:#101315 bg:#343d41)[$symbol $branch]($style)"
+format = "[](fg:#282c34 bg:#343d41)[$symbol $branch]($style)"
 
 [git_status]
 style = "bg:#4b4e55 fg:#cacccc"
-format = "[](fg:#343d41 bg:#4b4e55)[󰊢 $all_status$ahead_behind]($style)[](fg:#4b4e55 bg:#101315)"
+format = "[](fg:#343d41 bg:#4b4e55)[󰊢 $all_status$ahead_behind]($style)[](fg:#4b4e55 bg:#282c34)"
 
 conflicted = "[!](fg:#de6145 bg:#4b4e55) "
 modified   = "[●](fg:#c9c2b4 bg:#4b4e55) "
@@ -105,7 +105,7 @@ behind     = "[⇣](fg:#de6145 bg:#4b4e55) "
 [cmd_duration]
 min_time = 2000
 style = "bg:#798186 fg:#101315"
-format = "[ $duration ]($style)[](fg:#798186 bg:#101315)"
+format = "[ $duration ]($style)[](fg:#798186 bg:#282c34)"
 
 [time]
 disabled = true
