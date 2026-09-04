@@ -18,6 +18,7 @@
 !rmpc/**
 !mpd/
 !mpd/**
+!createLink.sh
 
 !.gitattributes
 
